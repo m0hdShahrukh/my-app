@@ -17,7 +17,7 @@ export default function Navbar(props) {
           <a className="nav-link" href="index.html">Link</a>
         </li>
         <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a className="nav-link dropdown-toggle" href="index.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown
           </a>
           <ul className="dropdown-menu">
@@ -28,7 +28,7 @@ export default function Navbar(props) {
           </ul>
         </li>
         <li className="nav-item">
-          <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+          <a className="nav-link disabled" href="index.html" aria-disabled="true">Disabled</a>
         </li>
       </ul>
       <form className="d-flex" role="search">
