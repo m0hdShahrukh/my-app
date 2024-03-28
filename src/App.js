@@ -5,9 +5,9 @@ import TextForm from './components/TextForm';
 function App() {
   return (
     <div className="App">
-      <Navbar logo="MOHD"/>
+      <Navbar/>
       <div className="container">
-      <TextForm heading="Please enter the text to ConvertCASE"/>
+      <TextForm heading="Please enter the text to"/>
       </div>
     </div>
   );
