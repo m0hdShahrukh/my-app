@@ -18,7 +18,38 @@ export default function TextForm(props) {
         let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
         setText(newText);
     };
+    const handleUPClickCopy = () => {
+        let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
     
+        const textarea = document.createElement('textarea');
+        textarea.value = newText;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = 0;
+        document.body.appendChild(textarea);
+    
+        textarea.select();
+        textarea.setSelectionRange(0, 99999); // For mobile devices
+    
+        document.execCommand('copy');
+    
+        document.body.removeChild(textarea);
+    
+        // Create a div for the prompt
+        const promptDiv = document.createElement('div');
+        promptDiv.textContent = "Text copied to clipboard!";
+        promptDiv.classList.add('copy-prompt');
+    
+        // Insert the prompt below the button
+        const buttonContainer = document.querySelector('.button-container');
+        buttonContainer.appendChild(promptDiv);
+    
+        // Remove the prompt after 3 seconds
+        setTimeout(() => {
+            buttonContainer.removeChild(promptDiv);
+        }, 3000);
+    };
+    
+
 
     const handdleOnChange = (event) => {
         console.log("On Change");
@@ -77,6 +108,21 @@ export default function TextForm(props) {
                                 <div class="circle"></div>
                             </div>
                         </button>
+                    </span>
+                    <span className='button-container copy ml-3'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickCopy}>  <strong>
+                            Copy
+                        </strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                        
                     </span>
                     <span className="count mx-3">
                         <span>Words <span className='counting'>{text.split(" ").length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
