@@ -8,6 +8,17 @@ export default function TextForm(props) {
         let newText = text.toUpperCase();
         setText(newText);
     };
+    const handdleUPclickL = () => {
+        console.log("Upper Case Clicked" + text);
+        let newText = text.toLowerCase();
+        setText(newText);
+    };
+    const handleUPClickC = () => {
+        console.log("Capital Case Clicked" + text);
+        let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
+        setText(newText);
+    };
+    
 
     const handdleOnChange = (event) => {
         console.log("On Change");
@@ -25,20 +36,51 @@ export default function TextForm(props) {
                     </div>
                 </div>
                 <div className="form-container-main">
-                <span>
-                <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclick}>  <strong>To UPPERCASE</strong>
-                    <div id="container-stars">
-                        <div id="stars"></div>
-                    </div>
+                    <span className='button-container'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclick}>  <strong>
+                            To UPPERCASE
+                        </strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
 
-                    <div id="glow">
-                        <div class="circle"></div>
-                        <div class="circle"></div>
-                    </div> </button>
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container mx-3'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclickL}>  <strong>
+                            To lowercase
+                        </strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container ml-3'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickC}>  <strong>
+                            To CapitalCase
+                        </strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
                     </span>
                     <span className="count mx-3">
-                    <span>Words <span className='counting'>{text.split(" ").length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
-                </span>
+                        <span>Words <span className='counting'>{text.split(" ").length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
+                    </span>
                 </div>
                 <section class="bg-stars">
                     <span class="star"></span>
