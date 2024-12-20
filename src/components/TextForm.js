@@ -135,7 +135,7 @@ export default function TextForm(props) {
                     <span class="star"></span>
                 </section>
             </div>
-            <a className="navbar-brand logo" href="index.html">MOHD <span>SHA</span>HRU<span>K</span>H</a>
+            <a className="navbar-brand logo" href="index.html">MOHD <span>SHA</span>H<span>R</span>U<span>K</span>H</a>
         </>
     )
 }
