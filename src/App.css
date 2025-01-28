@@ -29,6 +29,7 @@ color: #fff;
 }
 .my-btn {
   background: transparent;
+  border-radius: 5rem !important;
 }
 textarea{
   border-radius: unset;
@@ -439,7 +440,8 @@ strong {
 
 .btn:hover #container-stars {
   z-index: 1;
-  background-color: #212121;
+  background-color: unset !important;
+  background-image: unset !important;
 }
 
 .btn:hover {
