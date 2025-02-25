@@ -18,6 +18,30 @@ export default function TextForm(props) {
         let newText = text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
         setText(newText);
     };    
+    const handleUndo = () => {
+        if (historyIndex > 0) {
+            const newIndex = historyIndex - 1;
+            setHistoryIndex(newIndex);
+            setText(history[newIndex]);
+        }
+    };
+    const [history, setHistory] = useState(['Enter the text']);
+    const [historyIndex, setHistoryIndex] = useState(0);
+
+    const updateText = (newText) => {
+        const newHistory = history.slice(0, historyIndex + 1);
+        newHistory.push(newText);
+        setHistory(newHistory);
+        setHistoryIndex(newHistory.length - 1);
+        setText(newText);
+    };
+    const handleClear = () => updateText('');
+    const handleKeyDown = (e) => {
+        if (e.ctrlKey && e.key === 'z') {
+            e.preventDefault();
+            handleUndo();
+        }
+    };
     const handleUPClickCopy = () => {
         let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
     
@@ -63,13 +87,13 @@ export default function TextForm(props) {
                     <h4 htmlFor="myBox" className="form-title">{props.heading}</h4>
                     <div class="title-2"><span>ConvertCASE</span></div>
                     <div className="input-container">
-                        <textarea className="input-mail form-control" value={text} onChange={handdleOnChange} id="myBox" rows="8"></textarea>
+                        <textarea className="input-mail form-control" value={text} onChange={handdleOnChange}  onKeyDown={handleKeyDown} id="myBox" rows="8"></textarea>
                     </div>
                 </div>
                 <div className="form-container-main">
                     <span className='button-container'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclick}>  <strong>
-                            To UPPERCASE
+                            UPPERCASE
                         </strong>
                             <div id="container-stars">
                                 <div id="stars"></div>
@@ -83,7 +107,7 @@ export default function TextForm(props) {
                     </span>
                     <span className='button-container mx-3'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclickL}>  <strong>
-                            To lowercase
+                            lowercase
                         </strong>
                             <div id="container-stars">
                                 <div id="stars"></div>
@@ -97,7 +121,7 @@ export default function TextForm(props) {
                     </span>
                     <span className='button-container ml-3'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickC}>  <strong>
-                            To CapitalCase
+                            CapitalCase
                         </strong>
                             <div id="container-stars">
                                 <div id="stars"></div>
@@ -124,8 +148,32 @@ export default function TextForm(props) {
                         </button>
                         
                     </span>
+                    <span className='button-container copy ml-3'>
+                        <button className="btn my-btn clear btn-primary" type="button" onClick={handleClear}><strong>Clear</strong>
+                        <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container copy ml-3'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleUndo}>
+                            <strong>Undo</strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+                            <div id="glow">
+                                <div className="circle"></div>
+                                <div className="circle"></div>
+                            </div>
+                        </button>
+                    </span>
                     <span className="count mx-3">
-                        <span>Words <span className='counting'>{text.split(" ").length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
+                        <span>Words <span className='counting'>{text.trim().split(/\s+/).filter(word => word !== '').length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
                     </span>
                 </div>
                 <section class="bg-stars">
