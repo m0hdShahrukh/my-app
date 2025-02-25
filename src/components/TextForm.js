@@ -15,9 +15,9 @@ export default function TextForm(props) {
     };
     const handleUPClickC = () => {
         console.log("Capital Case Clicked" + text);
-        let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
+        let newText = text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
         setText(newText);
-    };
+    };    
     const handleUPClickCopy = () => {
         let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
     
@@ -36,7 +36,7 @@ export default function TextForm(props) {
     
         // Create a div for the prompt
         const promptDiv = document.createElement('div');
-        promptDiv.textContent = "Text copied to clipboard!";
+        promptDiv.textContent = "😈Gyahahahaha, Your Text is Copied!";
         promptDiv.classList.add('copy-prompt');
     
         // Insert the prompt below the button
@@ -135,7 +135,7 @@ export default function TextForm(props) {
                     <span class="star"></span>
                 </section>
             </div>
-            <a className="navbar-brand logo" href="index.html">MOHD <span>SHA</span>H<span>R</span>U<span>K</span>H</a>
+           <a className="navbar-brand logo" href="index.html">MOHD <span>SHA</span>H<span>R</span>U<span>K</span>H</a>
         </>
     )
 }
