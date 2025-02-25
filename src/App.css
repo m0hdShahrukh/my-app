@@ -37,6 +37,8 @@ textarea{
 textarea#myBox {
   padding: 20px 20px;
   font-size: 18px;
+  background: #ffffff00;
+  color: #ffffff;
 }
 span.counting {
   font-weight: 600;
