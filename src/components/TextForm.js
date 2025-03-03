@@ -9,13 +9,43 @@ export default function TextForm(props) {
         setText(newText);
     };
     const handdleUPclickL = () => {
-        console.log("Upper Case Clicked" + text);
-        let newText = text.toLowerCase();
+        console.log("Lower Case Clicked");
+        let newText = text.split(/(\s+)/).map(word => {
+            // Check if word is all caps (acronym)
+            if (/^[A-Z]+$/.test(word)) {
+                return word;
+            }
+            return word.toLowerCase();
+        }).join('');
+        setText(newText);
+    };
+    const handleDashToTitle = () => {
+        console.log("Title Case Clicked" + text);
+        let newText = text
+            // Split on any non-alphanumeric character sequence
+            .split(/[^a-zA-Z0-9]+/)
+            // Remove empty strings from the array
+            .filter(word => word.length > 0)
+            // Capitalize first letter, lowercase rest for each segment
+            .map(word => 
+                word.charAt(0).toUpperCase() + 
+                word.slice(1).toLowerCase()
+            )
+            // Join with spaces
+            .join(' ');
+        
         setText(newText);
     };
     const handleUPClickC = () => {
-        console.log("Capital Case Clicked" + text);
-        let newText = text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+        console.log("Capital Case Clicked");
+        let newText = text.split(/(\s+)/).map(word => {
+            // Check if word is all caps (acronym)
+            if (/^[A-Z]+$/.test(word)) {
+                return word;
+            }
+            // Capitalize first letter, lowercase rest, but preserve existing uppercase in middle
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        }).join('');
         setText(newText);
     };
     const handleUndo = () => {
@@ -43,31 +73,31 @@ export default function TextForm(props) {
         }
     };
     const handleUPClickCopy = () => {
-        let newText = text.replace(/\b\w/g, (char) => char.toUpperCase());
-
+        // Remove the text transformation to preserve original casing
+        const textToCopy = text; // Directly use the current text state
+    
         const textarea = document.createElement('textarea');
-        textarea.value = newText;
+        textarea.value = textToCopy;
         textarea.style.position = 'fixed';
         textarea.style.opacity = 0;
         document.body.appendChild(textarea);
-
+    
         textarea.select();
-        textarea.setSelectionRange(0, 99999); // For mobile devices
-
+        textarea.setSelectionRange(0, 99999);
+    
         document.execCommand('copy');
-
+    
         document.body.removeChild(textarea);
-
+    
         // Create a div for the prompt
         const promptDiv = document.createElement('div');
         promptDiv.textContent = "😈Gyahahahaha, Your Text is Copied!";
         promptDiv.classList.add('copy-prompt');
-
+    
         // Insert the prompt below the button
         const buttonContainer = document.querySelector('.button-container');
         buttonContainer.appendChild(promptDiv);
-
-        // Remove the prompt after 3 seconds
+    
         setTimeout(() => {
             buttonContainer.removeChild(promptDiv);
         }, 3000);
@@ -91,7 +121,7 @@ export default function TextForm(props) {
                     </div>
                 </div>
                 <div className="form-container-main">
-                    <span className='button-container'>
+                    <span className='button-container uppercase'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclick}>  <strong>
                             UPPERCASE
                         </strong>
@@ -105,7 +135,7 @@ export default function TextForm(props) {
                             </div>
                         </button>
                     </span>
-                    <span className='button-container mx-3'>
+                    <span className='button-container mx-2 lowercase'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handdleUPclickL}>  <strong>
                             lowercase
                         </strong>
@@ -119,7 +149,7 @@ export default function TextForm(props) {
                             </div>
                         </button>
                     </span>
-                    <span className='button-container ml-3'>
+                    <span className='button-container mx-2 capitalcase'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickC}>  <strong>
                             CapitalCase
                         </strong>
@@ -133,7 +163,19 @@ export default function TextForm(props) {
                             </div>
                         </button>
                     </span>
-                    <span className='button-container copy ml-3'>
+                    <span className='button-container mx-2 titlecase'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleDashToTitle}>
+                            <strong>Title Case</strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container mx-2 copy-2'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickCopy}>  <strong>
                             Copy
                         </strong>
@@ -148,7 +190,7 @@ export default function TextForm(props) {
                         </button>
 
                     </span>
-                    <span className='button-container copy ml-3'>
+                    <span className='button-container mx-2 clear'>
                         <button className="btn my-btn clear btn-primary" type="button" onClick={handleClear}><strong>Clear</strong>
                             <div id="container-stars">
                                 <div id="stars"></div>
@@ -160,7 +202,7 @@ export default function TextForm(props) {
                             </div>
                         </button>
                     </span>
-                    <span className='button-container copy ml-3'>
+                    <span className='button-container mx-2 undo'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handleUndo}>
                             <strong>Undo</strong>
                             <div id="container-stars">
