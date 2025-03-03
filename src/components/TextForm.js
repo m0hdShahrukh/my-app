@@ -107,9 +107,8 @@ export default function TextForm(props) {
 
     const handdleOnChange = (event) => {
         console.log("On Change");
-        setText(event.target.value);
+        updateText(event.target.value);
     };
-
     return (
         <>
             <div className='container form'>
