@@ -10,15 +10,10 @@ export default function TextForm(props) {
     };
     const handdleUPclickL = () => {
         console.log("Lower Case Clicked");
-        let newText = text.split(/(\s+)/).map(word => {
-            // Check if word is all caps (acronym)
-            if (/^[A-Z]+$/.test(word)) {
-                return word;
-            }
-            return word.toLowerCase();
-        }).join('');
+        let newText = text.toLowerCase();
         setText(newText);
     };
+
     const handleDashToTitle = () => {
         console.log("Title Case Clicked" + text);
         let newText = text
@@ -27,15 +22,46 @@ export default function TextForm(props) {
             // Remove empty strings from the array
             .filter(word => word.length > 0)
             // Capitalize first letter, lowercase rest for each segment
-            .map(word => 
-                word.charAt(0).toUpperCase() + 
-                word.slice(1).toLowerCase()
-            )
+            // .map(word =>
+            //     word.charAt(0).toUpperCase() +
+            //     word.slice(1).toLowerCase()
+            // )
             // Join with spaces
             .join(' ');
-        
+
         setText(newText);
     };
+    // remove numbers
+    const handleRemoveNumbers = () => {
+        console.log("Remove Numbers Clicked: " + text);
+
+        let newText = text.replace(/\d+/g, ""); // Remove numbers (0-9) only
+
+        setText(newText);
+    };
+    // Add Line Numbers
+    const handleAddNumbers = () => {
+        console.log("Add Numbers Clicked: " + text);
+
+        let newText = text
+            .split("\n") // Split text into lines
+            .map((line, index) => `${index + 1}. ${line}`) // Add numbers
+            .join("\n"); // Join back with new lines
+
+        setText(newText);
+    };
+// Convert Li
+const handleConvertToUL = () => {
+    const lines = text.split('\n')
+        .map(line => line.trim())
+        .filter(line => line !== '');
+
+    const lis = lines.map(line => `  <li> ${line}</li>`).join('\n');
+    const ul = `<ul>\n${lis}\n</ul>`;
+    updateText(ul);
+};
+
+    //CapitalCase
     const handleUPClickC = () => {
         console.log("Capital Case Clicked");
         let newText = text.split(/(\s+)/).map(word => {
@@ -75,35 +101,33 @@ export default function TextForm(props) {
     const handleUPClickCopy = () => {
         // Remove the text transformation to preserve original casing
         const textToCopy = text; // Directly use the current text state
-    
+
         const textarea = document.createElement('textarea');
         textarea.value = textToCopy;
         textarea.style.position = 'fixed';
         textarea.style.opacity = 0;
         document.body.appendChild(textarea);
-    
+
         textarea.select();
         textarea.setSelectionRange(0, 99999);
-    
+
         document.execCommand('copy');
-    
+
         document.body.removeChild(textarea);
-    
+
         // Create a div for the prompt
         const promptDiv = document.createElement('div');
         promptDiv.textContent = "😈Gyahahahaha, Your Text is Copied!";
         promptDiv.classList.add('copy-prompt');
-    
+
         // Insert the prompt below the button
-        const buttonContainer = document.querySelector('.button-container');
+        const buttonContainer = document.querySelector('.copy-propt-window');
         buttonContainer.appendChild(promptDiv);
-    
+
         setTimeout(() => {
             buttonContainer.removeChild(promptDiv);
-        }, 3000);
+        }, 1500);
     };
-
-
 
     const handdleOnChange = (event) => {
         console.log("On Change");
@@ -118,6 +142,53 @@ export default function TextForm(props) {
                     <div className="input-container">
                         <textarea className="input-mail form-control" value={text} onChange={handdleOnChange} onKeyDown={handleKeyDown} id="myBox" rows="8"></textarea>
                     </div>
+                </div>
+                <div className="form-container-main">
+                    <div className='count-blank-class'>
+                        <span className='copy-propt-window'></span>
+                        <span className="count mx-3">
+                            <span>Words <span className='counting'>{text.trim().split(/\s+/).filter(word => word !== '').length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
+                        </span>
+                    </div>
+                    <span className='button-container mx-2 copy-2'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickCopy}>  <strong>
+                            Copy
+                        </strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+
+                    </span>
+                    <span className='button-container mx-2 clear'>
+                        <button className="btn my-btn clear btn-primary" type="button" onClick={handleClear}><strong>Clear</strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container mx-2 undo'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleUndo}>
+                            <strong>Undo</strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+                            <div id="glow">
+                                <div className="circle"></div>
+                                <div className="circle"></div>
+                            </div>
+                        </button>
+                    </span>
                 </div>
                 <div className="form-container-main">
                     <span className='button-container uppercase'>
@@ -162,9 +233,33 @@ export default function TextForm(props) {
                             </div>
                         </button>
                     </span>
-                    <span className='button-container mx-2 titlecase'>
+                    <span className='button-container mx-2 numbers'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleRemoveNumbers}>
+                            <strong>Remove Numbers</strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container mx-2 line-numbers'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleAddNumbers}>
+                            <strong>Add Line Numbers</strong>
+                            <div id="container-stars">
+                                <div id="stars"></div>
+                            </div>
+                            <div id="glow">
+                                <div class="circle"></div>
+                                <div class="circle"></div>
+                            </div>
+                        </button>
+                    </span>
+                    <span className='button-container mx-2 symbols'>
                         <button className="btn my-btn btn-primary" type="button" onClick={handleDashToTitle}>
-                            <strong>Title Case</strong>
+                            <strong>Remove Symbols</strong>
                             <div id="container-stars">
                                 <div id="stars"></div>
                             </div>
@@ -174,36 +269,9 @@ export default function TextForm(props) {
                             </div>
                         </button>
                     </span>
-                    <span className='button-container mx-2 copy-2'>
-                        <button className="btn my-btn btn-primary" type="button" onClick={handleUPClickCopy}>  <strong>
-                            Copy
-                        </strong>
-                            <div id="container-stars">
-                                <div id="stars"></div>
-                            </div>
-
-                            <div id="glow">
-                                <div class="circle"></div>
-                                <div class="circle"></div>
-                            </div>
-                        </button>
-
-                    </span>
-                    <span className='button-container mx-2 clear'>
-                        <button className="btn my-btn clear btn-primary" type="button" onClick={handleClear}><strong>Clear</strong>
-                            <div id="container-stars">
-                                <div id="stars"></div>
-                            </div>
-
-                            <div id="glow">
-                                <div class="circle"></div>
-                                <div class="circle"></div>
-                            </div>
-                        </button>
-                    </span>
-                    <span className='button-container mx-2 undo'>
-                        <button className="btn my-btn btn-primary" type="button" onClick={handleUndo}>
-                            <strong>Undo</strong>
+                    <span className='button-container mx-2 ul-li'>
+                        <button className="btn my-btn btn-primary" type="button" onClick={handleConvertToUL}>
+                            <strong>Convert to UL/LI</strong>
                             <div id="container-stars">
                                 <div id="stars"></div>
                             </div>
@@ -212,9 +280,6 @@ export default function TextForm(props) {
                                 <div className="circle"></div>
                             </div>
                         </button>
-                    </span>
-                    <span className="count mx-3">
-                        <span>Words <span className='counting'>{text.trim().split(/\s+/).filter(word => word !== '').length}</span></span> <span>Characters <span className='counting'>{text.length}</span></span>
                     </span>
                 </div>
                 <section class="bg-stars">
@@ -236,9 +301,9 @@ export default function TextForm(props) {
                     </li>
                     <li>
                         <a href="https://dev-loper-srk.pantheonsite.io/" className="twitter" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-              <path fill="currentColor" d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M5 5H19V8H5V5M5 10H19V19H5V10M7 12V17H17V12H7M9 14H15V15H9V14Z"/>
-            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M5 5H19V8H5V5M5 10H19V19H5V10M7 12V17H17V12H7M9 14H15V15H9V14Z" />
+                            </svg>
                         </a>
                     </li>
                     <li>
@@ -250,9 +315,9 @@ export default function TextForm(props) {
                     </li>
                     <li>
                         <a href="https://www.linkedin.com/in/mohd2456/" className="linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.024-3.041-1.853-3.041-1.854 0-2.139 1.45-2.139 2.949v5.661h-3.554V9h3.414v1.561h.047c.476-.901 1.635-1.854 3.366-1.854 3.6 0 4.266 2.368 4.266 5.448v6.297zM5.337 7.433c-1.144 0-2.07-.93-2.07-2.077 0-1.147.926-2.077 2.07-2.077s2.07.93 2.07 2.077c0 1.147-.926 2.077-2.07 2.077zM6.996 20.452H3.676V9h3.32v11.452zM22.225 0H1.771C.792 0 0 .775 0 1.729v20.542C0 23.225.792 24 1.771 24h20.451C23.207 24 24 23.225 24 22.271V1.729C24 .775 23.207 0 22.225 0z"/>
-</svg>
+                            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.024-3.041-1.853-3.041-1.854 0-2.139 1.45-2.139 2.949v5.661h-3.554V9h3.414v1.561h.047c.476-.901 1.635-1.854 3.366-1.854 3.6 0 4.266 2.368 4.266 5.448v6.297zM5.337 7.433c-1.144 0-2.07-.93-2.07-2.077 0-1.147.926-2.077 2.07-2.077s2.07.93 2.07 2.077c0 1.147-.926 2.077-2.07 2.077zM6.996 20.452H3.676V9h3.32v11.452zM22.225 0H1.771C.792 0 0 .775 0 1.729v20.542C0 23.225.792 24 1.771 24h20.451C23.207 24 24 23.225 24 22.271V1.729C24 .775 23.207 0 22.225 0z" />
+                            </svg>
 
                         </a>
                     </li>

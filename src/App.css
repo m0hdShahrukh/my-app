@@ -7,7 +7,7 @@ body{
 .form-container-main {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
   align-items: center;
 }
 a.nav-link.active {
@@ -210,8 +210,6 @@ span.counting {
   text-shadow: 0px 0px 16px #CECECE;
 }
 .copy-prompt {
-  position: absolute;
-  right: 22%;
   color: chartreuse;
 }
 .copy {
